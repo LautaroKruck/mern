@@ -1,7 +1,7 @@
 const { Router } = require('express');
-const usuarioCtrl = require('../controllers/auth.controller');
 const multer = require('multer');
 const path = require('path');
+const usuarioCtrl = require('../controllers/usuario.controller');
 const { verificarToken } = require('../middlewares/authMiddleware');
 
 const router = Router();
