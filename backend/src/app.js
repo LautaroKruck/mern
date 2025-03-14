@@ -1,12 +1,10 @@
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
-const app = express();
+const path = require('path');
 const usuarioRoutes = require('./routes/usuario');
-const authRoutes = require('./routes/auth');
+const authRoutes = require('./routes/usuario');
 
-// Configuración
-app.set('port', process.env.PORT || 4000);
+const app = express();
 
 // Middleware
 app.use(cors());
@@ -18,7 +16,6 @@ app.get('/', (req, res) => {
   res.send('Bienvenido a la API RESTful');
 });
 
-app.use('/api/auth', authRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 
 module.exports = app;

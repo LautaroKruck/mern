@@ -1,15 +1,29 @@
+// Cargar variables de entorno desde .env
 require('dotenv').config();
-const app = require('./app');
-require('./database');
 
-// Ejecutamos el servidor
-async function main() {
-    try {
-        await app.listen(app.get('port'));
-        console.log('El servidor se está escuchando en el puerto:', app.get('port'));
-    } catch (error) {
-        console.error('Error al iniciar el servidor:', error.message);
-    }
-}
+// Importaciones necesarias
+const app = require('./app'); // Importa la configuración de Express
+const conectarDB = require('./database'); // Función para conectar a MongoDB
 
-main();
+// Configuración del puerto
+const PORT = process.env.PORT || 4000;
+
+// Función para iniciar el servidor
+const iniciarServidor = async () => {
+  try {
+    console.log('🔄 Iniciando conexión con la base de datos...');
+    await conectarDB(); // Conectar a MongoDB
+    console.log('✅ Conexión establecida con la base de datos.');
+
+    // Iniciar servidor Express
+    app.listen(PORT, () => {
+      console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('❌ Error crítico al iniciar el servidor:', error);
+    process.exit(1); // Detiene el proceso si hay un error grave
+  }
+};
+
+// Llamar a la función para arrancar la aplicación
+iniciarServidor();

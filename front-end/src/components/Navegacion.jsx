@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-
 const Navegacion = () => {
   return (
     <div>
@@ -35,12 +34,22 @@ const Navegacion = () => {
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
                 <Link className="nav-link" to="/">
-                  Lista de Socios
+                  Lista de Usuarios
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/CrearUsuario">
-                  Crear Socio
+                <Link className="nav-link" to="/perfil">
+                  Perfil
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/register">
+                  Register
                 </Link>
               </li>
             </ul>
@@ -50,6 +59,5 @@ const Navegacion = () => {
     </div>
   );
 }
-
 
 export default Navegacion;

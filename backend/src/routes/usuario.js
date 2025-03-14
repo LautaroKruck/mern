@@ -1,30 +1,25 @@
-const { Router } = require('express');
-const multer = require('multer');
-const path = require('path');
+const express = require('express');
+const router = express.Router();
 const usuarioCtrl = require('../controllers/usuario.controller');
-const { verificarToken } = require('../middlewares/authMiddleware');
+const { verificarToken } = require('../middlewares/auth');
+const upload = require('../middlewares/multer');
 
-const router = Router();
+// Registro de usuario
+router.post('/register', upload.single('foto'), usuarioCtrl.createUsu);
 
-// Configuración de Multer para manejar imágenes
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../img'));
-  },
-  filename: (req, file, cb) => {
-    const nombreFoto = `${Date.now()}-${file.originalname}`;
-    req.body.nombreFoto = nombreFoto;
-    cb(null, nombreFoto);
-  }
-});
+// Login de usuario (aún no implementado en el controller, se debe agregar)
+router.post('/login', usuarioCtrl.login);
 
-const upload = multer({ storage });
+// Actualizar perfil del usuario autenticado
+router.put('/perfil/:id', verificarToken, upload.single('foto'), usuarioCtrl.updateUsu);
 
-// Rutas de usuario
-router.get('/', verificarToken, usuarioCtrl.getUsu);
-router.get('/:id', verificarToken, usuarioCtrl.getUsuario);
-router.post('/', verificarToken, upload.single('foto'), usuarioCtrl.createUsu);
-router.put('/:id', verificarToken, upload.single('foto'), usuarioCtrl.updateUsu);
-router.delete('/:id', verificarToken, usuarioCtrl.deleteUsu);
+// Obtener datos del usuario autenticado
+router.get('/perfil/:id', verificarToken, usuarioCtrl.getUsuario);
+
+// Obtener todos los usuarios (requiere autenticación, pero podría abrirse según necesidad)
+router.get('/usuarios', verificarToken, usuarioCtrl.listarUsuarios);
+
+// Eliminar un usuario por ID
+router.delete('/usuarios/:id', verificarToken, usuarioCtrl.deleteUsu);
 
 module.exports = router;
